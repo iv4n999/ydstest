@@ -99,7 +99,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         print(info)
         return {
             'track': os.environ.get("UI_Track") if os.environ.get(
-                "UI_Track") is not None else "Ищем информацию о треке",
+                "UI_Track") is not None else "Ищем информацию",
             'artist': os.environ.get("UI_Artists"),
             'image': os.environ.get("UI_ImageLink"),
             'id': os.environ.get("UI_ID")
