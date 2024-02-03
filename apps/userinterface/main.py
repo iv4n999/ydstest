@@ -75,7 +75,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         super(TaskBarIcon, self).__init__()
         self.set_icon(TRAY_ICON)
         self.Bind(wx.adv.EVT_TASKBAR_RIGHT_DOWN, self.on_right_down)
-        self.ShowBalloon("Привет!", "Я нахожусь в трее.")
+        self.ShowBalloon("Привет!", "Я свернулся сюда!.")
         self.trackinfo = self.get_track_info()
 
     def CreatePopupMenu(self):
