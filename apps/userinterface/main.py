@@ -124,7 +124,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         webbrowser.open("https://github.com/maj0roff/YandexMusicDiscordRPC_New")
 
     def opentg(self, event):
-        webbrowser.open("https://t.me/arder666")
+        webbrowser.open("https://t.me/karder666")
 
     def on_right_down(self, event):
         self.trackinfo = self.get_track_info()
