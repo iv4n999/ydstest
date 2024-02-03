@@ -116,7 +116,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         config.set('Settings', 'token', "TOKEN_HERE")
         with open('config.ini', 'w') as cfg:
             config.write(cfg)
-        self.ShowBalloon("Уведомление", "Вы успешно вышли из аккаунта.")
+        self.ShowBalloon("Уведомление", "Вы успешно вышли.")
         wx.CallAfter(self.Destroy)
         self.frame.Close()
 
