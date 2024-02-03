@@ -81,7 +81,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
     def CreatePopupMenu(self):
         menu = wx.Menu()
         logo_label = create_label(menu, png_to_bitmap(TRAY_ICON), 'YandexMusicRPC', self.opengit)
-        telegram_label = create_label(menu, png_to_bitmap(TELEGRAM_ICON), 'Мой телеграм канал', self.opentg)
+        telegram_label = create_label(menu, png_to_bitmap(TELEGRAM_ICON), 'Мой телеграм', self.opentg)
         menu.AppendSeparator()
         username_label = create_label(menu, None, f'Вы вошли как: {os.environ.get("Yandex_Login")}@yandex.ru', None)
         username_label.Enable(False)
