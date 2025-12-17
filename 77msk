@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>77MSK - Ваш Надежный Фулфилмент-Партнер</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.8), rgba(75, 0, 130, 0.8)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1875&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .workflow-bg {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.9), rgba(75, 0, 130, 0.9)), url('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1875&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .delivery-bg {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.8), rgba(75, 0, 130, 0.8)), url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1875&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .cta-bg {
+            background: linear-gradient(135deg, #ff4081, #e91e63, #9c27b0);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        }
+        
+        .process-step {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3730a3, #5b21b6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #fff;
+            color: #1f2937;
+        }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .telegram-setup {
+            background: linear-gradient(135deg, #0088cc, #229ed9);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 60;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white smooth-scroll">
+    <!-- Navigation -->
+    <nav class="navbar fixed top-0 w-full z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="text-xl md:text-2xl font-bold">77MSK</div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#hero" class="hover:text-purple-400 transition-colors">Главная</a>
+                    <a href="#workflow" class="hover:text-purple-400 transition-colors">Процесс</a>
+                    <a href="#advantages" class="hover:text-purple-400 transition-colors">Преимущества</a>
+                    <a href="#contact" class="hover:text-purple-400 transition-colors">Контакты</a>
+                </div>
+                
+                <!-- Desktop Contact Button -->
+                <button class="hidden md:block btn-primary px-3 py-2 md:px-6 md:py-2 rounded-lg font-medium text-sm md:text-base" onclick="openContactModal()">
+                    Связаться
+                </button>
+                
+                <!-- Mobile Hamburger -->
+                <div class="hamburger md:hidden" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="text-center space-y-8">
+            <a href="#hero" class="block text-2xl hover:text-purple-400 transition-colors" onclick="closeMobileMenu()">Главная</a>
+            <a href="#workflow" class="block text-2xl hover:text-purple-400 transition-colors" onclick="closeMobileMenu()">Процесс</a>
+            <a href="#advantages" class="block text-2xl hover:text-purple-400 transition-colors" onclick="closeMobileMenu()">Преимущества</a>
+            <a href="#contact" class="block text-2xl hover:text-purple-400 transition-colors" onclick="closeMobileMenu()">Контакты</a>
+            <button class="btn-primary px-8 py-4 rounded-lg font-semibold text-lg mt-8" onclick="openContactModal(); closeMobileMenu();">
+                Связаться
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-bg min-h-screen flex items-center">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-4xl">
+                <h1 class="text-3xl md:text-6xl font-bold mb-4 md:mb-6 fade-in leading-tight">
+                    77MSK: Ваш Надежный Фулфилмент-Партнер
+                </h1>
+                <p class="text-base md:text-xl mb-6 md:mb-8 leading-relaxed fade-in">
+                    77MSK предлагает полный цикл обработки и логистики товаров, обеспечивая бесперебойную работу вашего бизнеса. Доверьте нам свои операции и сосредоточьтесь на росте!
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 md:gap-4 fade-in">
+                    <button class="btn-primary px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg w-full sm:w-auto" onclick="openContactForm()">
+                        Оставить заявку
+                    </button>
+                    <button class="btn-secondary px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg w-full sm:w-auto" onclick="scrollToSection('workflow')">
+                        Узнать больше
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="bg-gray-900 py-12 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                    Наши Услуги
+                </h2>
+                <p class="text-base md:text-xl max-w-4xl mx-auto leading-relaxed fade-in">
+                    Полный спектр фулфилмент услуг для вашего бизнеса
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <div class="service-card p-6 md:p-8 rounded-2xl fade-in text-center">
+                    <div class="text-4xl md:text-5xl mb-4">📦</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Приемка и хранение</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Профессиональная приемка товаров и современные складские решения</p>
+                </div>
+                
+                <div class="service-card p-6 md:p-8 rounded-2xl fade-in text-center">
+                    <div class="text-4xl md:text-5xl mb-4">📋</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Комплектация</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Быстрая и точная сборка заказов любой сложности</p>
+                </div>
+                
+                <div class="service-card p-6 md:p-8 rounded-2xl fade-in text-center">
+                    <div class="text-4xl md:text-5xl mb-4">🚚</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Доставка</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Надежная логистика по всей России и СНГ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow" class="workflow-bg py-12 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                    Полный Цикл Обработки: От Поступления до Отправки
+                </h2>
+                <p class="text-base md:text-xl max-w-4xl mx-auto leading-relaxed fade-in">
+                    В 77MSK мы берем на себя все этапы обработки вашего товара, начиная от его поступления на склад и заканчивая финальной отправкой покупателю. Наша система гарантирует точность и своевременность на каждом шагу, исключая ошибки и задержки.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12 md:mb-16">
+                <div class="process-step p-6 md:p-8 rounded-2xl fade-in">
+                    <div class="text-3xl md:text-4xl mb-3 md:mb-4">📦</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Приемка товара</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Тщательная проверка и регистрация каждой единицы.</p>
+                </div>
+                
+                <div class="process-step p-6 md:p-8 rounded-2xl fade-in">
+                    <div class="text-3xl md:text-4xl mb-3 md:mb-4">🏢</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Хранение</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Оптимальное размещение на складе для легкого доступа.</p>
+                </div>
+                
+                <div class="process-step p-6 md:p-8 rounded-2xl fade-in">
+                    <div class="text-3xl md:text-4xl mb-3 md:mb-4">📋</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Комплектация заказов</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Быстрая и точная сборка по вашим спецификациям.</p>
+                </div>
+                
+                <div class="process-step p-6 md:p-8 rounded-2xl fade-in">
+                    <div class="text-3xl md:text-4xl mb-3 md:mb-4">🚚</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Отправка и доставка</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Организация логистики до конечного потребителя.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Storage Solutions -->
+    <section id="storage" class="bg-gray-900 py-12 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                    Складские Решения: Безопасность и Организация Вашего Товара
+                </h2>
+                <p class="text-base md:text-xl max-w-4xl mx-auto leading-relaxed fade-in">
+                    Наши складские комплексы оснащены по последнему слову техники, обеспечивая максимальную безопасность и эффективное хранение вашей продукции. Мы предлагаем различные условия хранения, адаптированные под любые типы товаров, от крупногабаритных до хрупких.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="fade-in">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Надежное хранение</h3>
+                    <ul class="space-y-3 text-gray-300 text-sm md:text-base">
+                        <li>• Круглосуточная охрана и видеонаблюдение.</li>
+                        <li>• Системы контроля доступа.</li>
+                        <li>• Пожарная безопасность.</li>
+                    </ul>
+                </div>
+                
+                <div class="fade-in">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Оптимизация пространства</h3>
+                    <ul class="space-y-3 text-gray-300 text-sm md:text-base">
+                        <li>• Адресное хранение.</li>
+                        <li>• Системы стеллажного хранения.</li>
+                        <li>• Эффективное использование площади.</li>
+                    </ul>
+                </div>
+                
+                <div class="fade-in">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Специальные условия</h3>
+                    <ul class="space-y-3 text-gray-300 text-sm md:text-base">
+                        <li>• Контроль температуры и влажности.</li>
+                        <li>• Хранение специфических грузов.</li>
+                        <li>• Решения для негабаритных товаров.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packaging Section -->
+    <section id="packaging" class="py-12 md:py-20 relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900"></div>
+        <div class="absolute inset-0 opacity-30">
+            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1875&q=80" alt="Packaging" class="w-full h-full object-cover">
+        </div>
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                        Упаковка и Комплектация: Профессионально и Эффективно
+                    </h2>
+                    <p class="text-base md:text-xl mb-6 md:mb-8 leading-relaxed fade-in">
+                        Качество упаковки играет ключевую роль в сохранности товара и впечатлении клиента. В 77MSK мы используем современные упаковочные материалы и методы, чтобы гарантировать, что каждый заказ будет доставлен в идеальном состоянии.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                        <div class="service-card p-4 md:p-6 rounded-xl fade-in">
+                            <h3 class="text-lg md:text-xl font-bold mb-3">Индивидуальная упаковка</h3>
+                            <p class="text-gray-300 text-sm md:text-base">Разработка решений под уникальные требования вашего продукта.</p>
+                        </div>
+                        
+                        <div class="service-card p-4 md:p-6 rounded-xl fade-in">
+                            <h3 class="text-lg md:text-xl font-bold mb-3">Надежные материалы</h3>
+                            <p class="text-gray-300 text-sm md:text-base">Использование экологичных и прочных упаковочных материалов.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card p-4 md:p-6 rounded-xl fade-in mb-6 md:mb-8">
+                        <h3 class="text-lg md:text-xl font-bold mb-3">Эффективная комплектация</h3>
+                        <p class="text-gray-300 text-sm md:text-base">Точная сборка заказов, включая вложения и рекламные материалы.</p>
+                    </div>
+                    
+                    <p class="text-base md:text-lg fade-in">
+                        Наши специалисты обучены всем тонкостям упаковки, что минимизирует риск повреждений при транспортировке и повышает лояльность ваших покупателей.
+                    </p>
+                </div>
+                
+                <div class="fade-in order-1 lg:order-2">
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Professional Packaging" class="rounded-2xl shadow-2xl w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Last Mile Logistics -->
+    <section id="delivery" class="delivery-bg py-12 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                    Логистика Последней Мили: Быстрая Доставка до Клиента
+                </h2>
+                <p class="text-base md:text-xl max-w-4xl mx-auto mb-6 md:mb-8 leading-relaxed fade-in">
+                    Один из самых критичных этапов — доставка до конечного потребителя. 77MSK специализируется на логистике последней мили, обеспечивая оперативную и надежную доставку ваших товаров.
+                </p>
+                <p class="text-sm md:text-lg max-w-3xl mx-auto fade-in">
+                    Мы работаем с проверенными курьерскими службами и оптимизируем маршруты для максимальной скорости. Ваши клиенты получат заказы точно в срок.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="process-step p-6 md:p-8 rounded-2xl text-center fade-in">
+                    <div class="text-4xl md:text-6xl font-bold text-purple-400 mb-4">1</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Гибкие варианты доставки</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Выбор оптимальных способов доставки: курьер, пункты выдачи, почта.</p>
+                </div>
+                
+                <div class="process-step p-6 md:p-8 rounded-2xl text-center fade-in">
+                    <div class="text-4xl md:text-6xl font-bold text-purple-400 mb-4">2</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Отслеживание статуса</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Полная прозрачность на каждом этапе доставки для вас и ваших клиентов.</p>
+                </div>
+                
+                <div class="process-step p-6 md:p-8 rounded-2xl text-center fade-in">
+                    <div class="text-4xl md:text-6xl font-bold text-purple-400 mb-4">3</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Оптимизация затрат</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Эффективное управление логистикой для снижения ваших расходов.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration & Control -->
+    <section id="integration" class="bg-gray-900 py-12 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                    Интеграция и Контроль: Управляйте Процессами Онлайн
+                </h2>
+                <p class="text-base md:text-xl max-w-4xl mx-auto mb-6 md:mb-8 leading-relaxed fade-in">
+                    С 77MSK вы всегда остаетесь в курсе всех процессов. Наша современная ИТ-инфраструктура позволяет интегрировать ваш интернет-магазин или CRM-систему с нашей платформой, предоставляя полный контроль и прозрачность.
+                </p>
+                <p class="text-sm md:text-lg max-w-3xl mx-auto fade-in">
+                    Вы сможете отслеживать остатки товаров, статус заказов, анализировать данные и принимать обоснованные решения, где бы вы ни находились.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div class="fade-in">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Единая панель управления</h3>
+                    <p class="text-gray-300 mb-4 md:mb-6 text-sm md:text-base">Доступ к всей необходимой информации в одном месте.</p>
+                    <ul class="space-y-3 text-gray-300 text-sm md:text-base">
+                        <li>• Отчеты по остаткам.</li>
+                        <li>• Статистика по заказам.</li>
+                        <li>• История операций.</li>
+                    </ul>
+                </div>
+                
+                <div class="fade-in">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4 md:mb-6">API интеграция</h3>
+                    <p class="text-gray-300 mb-4 md:mb-6 text-sm md:text-base">Бесшовная синхронизация с вашими системами.</p>
+                    <ul class="space-y-3 text-gray-300 text-sm md:text-base">
+                        <li>• moysklad, bitrix и другие.</li>
+                        <li>• Управление заказами в реальном времени.</li>
+                        <li>• Автоматизация процессов.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages -->
+    <section id="advantages" class="bg-gray-900 py-12 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                    Преимущества 77MSK: Оптимизируйте Ваши Расходы
+                </h2>
+                <p class="text-base md:text-xl max-w-4xl mx-auto mb-8 md:mb-12 leading-relaxed fade-in">
+                    Выбирая 77MSK, вы не просто получаете фулфилмент-услуги, но и значительно снижаете операционные расходы и повышаете эффективность своего бизнеса. Мы предлагаем конкурентные тарифы и прозрачное ценообразование.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
+                <div class="text-center fade-in">
+                    <div class="flex items-center justify-center mb-4 md:mb-6">
+                        <div class="progress-bar h-3 md:h-4 rounded-full w-32 md:w-48">
+                            <div class="bg-white h-full rounded-full" style="width: 30%;"></div>
+                        </div>
+                        <span class="text-2xl md:text-4xl font-bold ml-3 md:ml-4">30%</span>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Сокращение издержек</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Экономия на аренде складов и зарплате персонала.</p>
+                </div>
+                
+                <div class="text-center fade-in">
+                    <div class="flex items-center justify-center mb-4 md:mb-6">
+                        <div class="progress-bar h-3 md:h-4 rounded-full w-32 md:w-48">
+                            <div class="bg-white h-full rounded-full" style="width: 20%;"></div>
+                        </div>
+                        <span class="text-2xl md:text-4xl font-bold ml-3 md:ml-4">20%</span>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Ускорение обработки</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Повышение скорости обработки и отправки заказов.</p>
+                </div>
+                
+                <div class="text-center fade-in">
+                    <div class="flex items-center justify-center mb-4 md:mb-6">
+                        <div class="progress-bar h-3 md:h-4 rounded-full w-32 md:w-48">
+                            <div class="bg-white h-full rounded-full" style="width: 15%;"></div>
+                        </div>
+                        <span class="text-2xl md:text-4xl font-bold ml-3 md:ml-4">15%</span>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Рост лояльности</h3>
+                    <p class="text-gray-300 text-sm md:text-base">Повышение удовлетворенности клиентов благодаря быстрой доставке.</p>
+                </div>
+            </div>
+            
+            <div class="text-center fade-in">
+                <p class="text-lg md:text-xl">Доверьте нам рутинные задачи и сосредоточьтесь на стратегическом развитии вашего бренда.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-bg py-12 md:py-20 relative overflow-hidden">
+        <div class="hidden lg:block absolute left-0 top-0 h-full w-1/2 flex items-center justify-center">
+            <div class="text-white text-4xl md:text-8xl font-black transform -rotate-12 opacity-20">
+                Fast and<br>Inspiring<br>Solution.
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="fade-in order-2 lg:order-1">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Online Form" class="rounded-2xl shadow-2xl w-full">
+                </div>
+                
+                <div class="fade-in order-1 lg:order-2">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
+                        Начните Работать с Нами: Оставьте Заявку Сегодня
+                    </h2>
+                    <p class="text-base md:text-xl mb-6 md:mb-8 leading-relaxed">
+                        Готовы передать логистику в надежные руки? Свяжитесь с нами сегодня, чтобы обсудить ваши потребности и получить индивидуальное коммерческое предложение. Наша команда всегда готова ответить на ваши вопросы и предложить наилучшие решения.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8">
+                        <button class="bg-white text-gray-900 px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-gray-100 transition-colors w-full sm:w-auto" onclick="openContactForm()">
+                            Оставить заявку
+                        </button>
+                        <button class="border-2 border-white text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-white hover:text-gray-900 transition-colors w-full sm:w-auto" onclick="openContactModal()">
+                            Позвонить нам
+                        </button>
+                    </div>
+                    
+                    <p class="text-base md:text-lg">Мы работаем, чтобы ваш бизнес рос!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & FAQ -->
+    <section id="contact" class="bg-gray-900 py-12 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 fade-in">
+                    Наши Контакты и Часто Задаваемые Вопросы
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                <div class="fade-in">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8">Свяжитесь с нами:</h3>
+                    
+                    <div class="space-y-4 md:space-y-6">
+                        <div>
+                            <span class="text-gray-400 text-sm md:text-base">Телефон:</span>
+                            <a href="tel:+79017250848" class="text-lg md:text-xl hover:text-purple-400 transition-colors ml-2 block sm:inline">+7 (901) 725-08-48</a>
+                        </div>
+                        
+                        <div>
+                            <span class="text-gray-400 text-sm md:text-base">Email:</span>
+                            <a href="mailto:ff77msk@gmail.com" class="text-lg md:text-xl hover:text-purple-400 transition-colors ml-2 block sm:inline break-all">ff77msk@gmail.com</a>
+                        </div>
+                        
+                        <div>
+                            <span class="text-gray-400 text-sm md:text-base">Адрес:</span>
+                            <span class="text-lg md:text-xl ml-2 block sm:inline">г. Москва, Оренбургская улица, 15Бпом2 </span>
+                        </div>
+                        
+                        <div>
+                            <span class="text-gray-400 text-sm md:text-base">Telegram:</span>
+                            <a href="https://t.me/MSK77FF" target="_blank" class="text-lg md:text-xl hover:text-purple-400 transition-colors ml-2 block sm:inline">@MSK77FF</a>
+                        </div>
+                    </div>
+                    
+                    <p class="text-base md:text-lg mt-6 md:mt-8">
+                        Мы всегда открыты для сотрудничества и готовы помочь вашему бизнесу достичь новых высот!
+                    </p>
+                </div>
+                
+                <div class="fade-in">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8">Часто задаваемые вопросы:</h3>
+                    
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="service-card p-4 md:p-6 rounded-xl">
+                            <h4 class="text-lg md:text-xl font-bold mb-3">Сколько времени занимает обработка заказа?</h4>
+                            <p class="text-gray-300 text-sm md:text-base">Обычно, 1-2 рабочих дня с момента получения товара.</p>
+                        </div>
+                        
+                        <div class="service-card p-4 md:p-6 rounded-xl">
+                            <h4 class="text-lg md:text-xl font-bold mb-3">Есть ли минимальный объем заказов?</h4>
+                            <p class="text-gray-300 text-sm md:text-base">Мы работаем как с крупными, так и с небольшими компаниями.</p>
+                        </div>
+                        
+                        <div class="service-card p-4 md:p-6 rounded-xl">
+                            <h4 class="text-lg md:text-xl font-bold mb-3">Как происходит интеграция с моим магазином?</h4>
+                            <p class="text-gray-300 text-sm md:text-base">Через API или готовые модули для популярных CMS.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 md:py-12">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center">
+                <div class="text-2xl md:text-3xl font-bold mb-4">77MSK</div>
+                <p class="text-gray-400 mb-6 md:mb-8 text-sm md:text-base">Ваш надежный фулфилмент-партнер</p>
+                
+                <div class="flex flex-wrap justify-center gap-4 md:gap-8 mb-6 md:mb-8 text-sm md:text-base">
+                    <a href="#hero" class="hover:text-purple-400 transition-colors">Главная</a>
+                    <a href="#workflow" class="hover:text-purple-400 transition-colors">Процесс</a>
+                    <a href="#advantages" class="hover:text-purple-400 transition-colors">Преимущества</a>
+                    <a href="#contact" class="hover:text-purple-400 transition-colors">Контакты</a>
+                </div>
+                
+                <div class="border-t border-gray-800 pt-6 md:pt-8">
+                    <p class="text-gray-500 text-xs md:text-sm">&copy; 2024 77MSK. Все права защищены.</p>
+                    
+                    <!-- Developer Watermark -->
+                    <div class="mt-4 text-center">
+                        <button 
+                            onclick="openDeveloperContact()" 
+                            class="text-gray-600 hover:text-purple-400 transition-colors text-xs opacity-70 hover:opacity-100 cursor-pointer border-none bg-transparent"
+                            title="Разработчик сайта"
+                        >
+                            dev: Lavamander
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Numbers Modal -->
+    <div id="contactNumbersModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 md:p-8 max-w-md w-full mx-4">
+            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">📞 Свяжитесь с нами</h3>
+            
+            <div class="space-y-3 md:space-y-4">
+                <div class="contact-item p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-900 text-sm md:text-base">Общие вопросы</h4>
+                            <p class="text-xs md:text-sm text-gray-600">Основная линия</p>
+                        </div>
+                        <a href="tel:+79017250848" class="bg-green-500 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-green-600 transition-colors text-xs md:text-sm text-center">
+                            +7 (901) 725-08-48
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-item p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-900 text-sm md:text-base">Анна</h4>
+                            <p class="text-xs md:text-sm text-gray-600">Сотрудничество</p>
+                        </div>
+                        <a href="tel:+79017250849" class="bg-blue-500 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-blue-600 transition-colors text-xs md:text-sm text-center">
+                            +7 (916) 132-29-29
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-item p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-900 text-sm md:text-base">Сергей</h4>
+                            <p class="text-xs md:text-sm text-gray-600">Работа с заказами</p>
+                        </div>
+                        <a href="tel:+79017250850" class="bg-orange-500 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-orange-600 transition-colors text-xs md:text-sm text-center">
+                            +7 (968) 882-86-16
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-item p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-900 text-sm md:text-base">Андрей</h4>
+                            <p class="text-xs md:text-sm text-gray-600">Вопросы доставки</p>
+                        </div>
+                        <a href="tel:+79017250851" class="bg-purple-500 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-purple-600 transition-colors text-xs md:text-sm text-center">
+                            +7 (964) 634-23-30
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 md:mt-6 p-3 md:p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <span class="text-base md:text-lg mr-2">💬</span>
+                    <strong class="text-sm md:text-base">Telegram:</strong>
+                </div>
+                <a href="https://t.me/MSK77FF" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors text-sm md:text-base">
+                    @MSK77FF
+                </a>
+            </div>
+            
+            <div class="mt-4 md:mt-6 text-center">
+                <button onclick="closeContactModal()" class="px-4 py-2 md:px-6 md:py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm md:text-base w-full sm:w-auto">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Developer Contact Modal -->
+    <div id="developerContactModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 md:p-8 max-w-md w-full mx-4">
+            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">👨‍💻 Разработчик сайта</h3>
+            
+            <div class="text-center mb-6">
+                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl">🚀</span>
+                </div>
+                <h4 class="text-lg font-bold text-gray-900">Lavamander</h4>
+                <p class="text-sm text-gray-600">Веб-разработчик</p>
+            </div>
+            
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-lg mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-white text-xl mr-3">📱</span>
+                        <div>
+                            <p class="text-white font-semibold text-sm">Telegram</p>
+                            <p class="text-blue-100 text-xs">Связаться для новых проектов</p>
+                        </div>
+                    </div>
+                    <a 
+                        href="https://t.me/karder666" 
+                        target="_blank"
+                        class="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm"
+                    >
+                        Написать
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center text-sm text-gray-600 mb-6">
+                <p>💻 Создание сайтов и веб-приложений</p>
+                <p>🎨 Современный дизайн и UX</p>
+                <p>📱 Адаптивная верстка</p>
+            </div>
+            
+            <div class="text-center">
+                <button 
+                    onclick="closeDeveloperContact()" 
+                    class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm w-full sm:w-auto"
+                >
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form Modal -->
+    <div id="contactFormModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 md:p-8 max-w-md w-full mx-4">
+            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">🚀 Оставить заявку</h3>
+            
+            <!-- Telegram Setup Notice -->
+            <div class="telegram-setup mb-6">
+                <div class="flex items-center mb-3">
+                    <span class="text-xl md:text-2xl mr-2">🤖</span>
+                    <strong class="text-sm md:text-base">Telegram интеграция настроена!</strong>
+                </div>
+                <p class="text-xs md:text-sm">Ваша заявка будет отправлена прямо в Telegram</p>
+            </div>
+            
+            <form id="contactForm" onsubmit="submitForm(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Имя *</label>
+                    <input type="text" name="name" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-purple-500 text-gray-900 text-sm md:text-base">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email *</label>
+                    <input type="email" name="email" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-purple-500 text-gray-900 text-sm md:text-base">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Телефон *</label>
+                    <input type="tel" name="phone" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-purple-500 text-gray-900 text-sm md:text-base">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Сообщение</label>
+                    <textarea name="message" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-purple-500 text-gray-900 text-sm md:text-base" placeholder="Расскажите о ваших потребностях..."></textarea>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <button type="button" onclick="closeContactForm()" class="px-4 py-2 md:px-6 md:py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm md:text-base w-full sm:w-auto order-2 sm:order-1">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn-primary px-4 py-2 md:px-6 md:py-2 rounded-lg text-white flex items-center justify-center text-sm md:text-base w-full sm:w-auto order-1 sm:order-2">
+                        <span class="loading mr-2"></span>
+                        <span class="submit-text">Отправить в Telegram</span>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-4 text-xs text-gray-500 text-center">
+                💡 Настройте своего бота: замените токен и Chat ID в коде
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // НАСТРОЙКИ TELEGRAM БОТА
+        // ========================================
+        // Замените эти значения на ваши настоящие данные:
+        
+        const TELEGRAM_CONFIG = {
+            // Токен вашего бота (получите у @BotFather)
+            BOT_TOKEN: '8011980650:AAHnLwWY42QP7cjDqo_y-QGYEcke78xBLmA', // Например: '123456789:ABCdefGHIjklMNOpqr'
+            
+            // Ваш Chat ID (получите у @userinfobot)
+            CHAT_ID: '7492262966', // Например: '123456789'
+            
+            // Включить/выключить отправку в Telegram (true/false)
+            ENABLED: true
+        };
+        
+        // ========================================
+        // МОБИЛЬНОЕ МЕНЮ
+        // ========================================
+        
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            mobileMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            
+            // Блокируем скролл когда меню открыто
+            if (mobileMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            mobileMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // ========================================
+        // ОСНОВНЫЕ ФУНКЦИИ САЙТА
+        // ========================================
+        
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Fade in animation on scroll
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Contact modal functions
+        function openContactModal() {
+            document.getElementById('contactNumbersModal').classList.remove('hidden');
+            closeMobileMenu(); // Закрываем мобильное меню если открыто
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactNumbersModal').classList.add('hidden');
+        }
+
+        // Developer contact functions
+        function openDeveloperContact() {
+            document.getElementById('developerContactModal').classList.remove('hidden');
+        }
+
+        function closeDeveloperContact() {
+            document.getElementById('developerContactModal').classList.add('hidden');
+        }
+
+        // Contact form functions
+        function openContactForm() {
+            document.getElementById('contactFormModal').classList.remove('hidden');
+            closeMobileMenu(); // Закрываем мобильное меню если открыто
+        }
+
+        function closeContactForm() {
+            document.getElementById('contactFormModal').classList.add('hidden');
+        }
+
+        // ========================================
+        // TELEGRAM ИНТЕГРАЦИЯ
+        // ========================================
+        
+        async function submitForm(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const loading = form.querySelector('.loading');
+            const submitText = form.querySelector('.submit-text');
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Показываем загрузку
+            loading.style.display = 'inline-block';
+            submitText.textContent = 'Отправляем...';
+            submitButton.disabled = true;
+            
+            // Собираем данные формы
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                message: formData.get('message') || 'Не указано'
+            };
+            
+            // Проверяем настройки Telegram
+            if (!TELEGRAM_CONFIG.ENABLED || 
+                TELEGRAM_CONFIG.BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE' || 
+                TELEGRAM_CONFIG.CHAT_ID === 'YOUR_CHAT_ID_HERE') {
+                
+                // Если Telegram не настроен, показываем демо
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    submitText.textContent = 'Отправить в Telegram';
+                    submitButton.disabled = false;
+                    
+                    alert(`🎉 Демо отправки в Telegram!
+
+📝 Данные заявки:
+👤 Имя: ${data.name}
+📧 Email: ${data.email}
+📱 Телефон: ${data.phone}
+💬 Сообщение: ${data.message}
+
+⚠️ Для реальной отправки настройте токен бота и Chat ID в коде.`);
+                    
+                    closeContactForm();
+                    form.reset();
+                }, 1000);
+                
+                return;
+            }
+            
+            // Формируем сообщение для Telegram
+            const telegramMessage = `🚀 *Новая заявка с сайта 77MSK*
+
+👤 *Имя:* ${data.name}
+📧 *Email:* ${data.email}
+📱 *Телефон:* ${data.phone}
+💬 *Сообщение:* ${data.message}
+
+📅 *Дата:* ${new Date().toLocaleDateString('ru-RU')}
+🕐 *Время:* ${new Date().toLocaleTimeString('ru-RU')}
+
+#заявка #новыйклиент`;
+
+            // Отправляем в Telegram
+            try {
+                const telegramURL = `https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`;
+                
+                const response = await fetch(telegramURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CONFIG.CHAT_ID,
+                        text: telegramMessage,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                // Возвращаем кнопку в исходное состояние
+                loading.style.display = 'none';
+                submitText.textContent = 'Отправить в Telegram';
+                submitButton.disabled = false;
+                
+                if (response.ok && result.ok) {
+                    // Успешная отправка
+                    alert('✅ Заявка успешно отправлена в Telegram!\n\nМы свяжемся с вами в ближайшее время.');
+                    closeContactForm();
+                    form.reset();
+                } else {
+                    // Ошибка Telegram API
+                    console.error('Telegram Error:', result);
+                    alert('❌ Ошибка отправки в Telegram.\n\nПожалуйста, попробуйте позже или свяжитесь с нами по телефону.');
+                }
+                
+            } catch (error) {
+                // Ошибка сети
+                console.error('Network Error:', error);
+                loading.style.display = 'none';
+                submitText.textContent = 'Отправить в Telegram';
+                submitButton.disabled = false;
+                
+                alert('❌ Ошибка сети.\n\nПроверьте подключение к интернету и попробуйте снова.');
+            }
+        }
+
+        // Navbar scroll effect
+        function handleNavbarScroll() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(0, 0, 0, 0.9)';
+            }
+        }
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        
+        // Анимации и навигация
+        window.addEventListener('scroll', handleScrollAnimations);
+        window.addEventListener('scroll', handleNavbarScroll);
+        window.addEventListener('load', handleScrollAnimations);
+
+        // Smooth anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    closeMobileMenu(); // Закрываем мобильное меню после клика по ссылке
+                }
+            });
+        });
+
+        // Close modal on outside click
+        document.getElementById('contactNumbersModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+
+        document.getElementById('developerContactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeveloperContact();
+            }
+        });
+
+        document.getElementById('contactFormModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactForm();
+            }
+        });
+
+        // Close mobile menu on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Показываем статус настройки при загрузке
+        window.addEventListener('load', function() {
+            if (TELEGRAM_CONFIG.BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE' || 
+                TELEGRAM_CONFIG.CHAT_ID === 'YOUR_CHAT_ID_HERE') {
+                console.log('🤖 Telegram бот не настроен. Работает в демо-режиме.');
+                console.log('📝 Инструкция по настройке:');
+                console.log('1. Создайте бота через @BotFather');
+                console.log('2. Получите токен и замените YOUR_BOT_TOKEN_HERE');
+                console.log('3. Получите Chat ID через @userinfobot');
+                console.log('4. Замените YOUR_CHAT_ID_HERE на ваш Chat ID');
+            } else {
+                console.log('✅ Telegram бот настроен и готов к работе!');
+            }
+        });
+    </script>
+</body>
+</html>
