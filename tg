@@ -1,131 +1,229 @@
-from telethon import TelegramClient, events
-from telethon.tl.functions.messages import CreateChatRequest
-from telethon.tl.types import InputUser
-
-# --- Конфигурация бота ---
-# Получите API ID и API Hash на my.telegram.org
-API_ID = ВАШ_API_ID  # Замените на ваш API ID
-API_HASH = 'ВАШ_API_HASH' # Замените на ваш API Hash (в кавычках)
-PHONE_NUMBER = 'ВАШ_НОМЕР_ТЕЛЕФОНА' # Замените на номер телефона аккаунта, от которого будет работать бот (например, '+79123456789')
-SESSION_NAME = 'my_telegram_user_session' # Имя файла сессии, где будут храниться данные авторизации
-
-# Список ников или ID пользователей для автоматического добавления в первую беседу
-# Пример: ['@username1', '@username2', '123456789']
-DEFAULT_USERS_TO_ADD = [
-    # Добавьте сюда ники или ID пользователей, например:
-    # '@user_one',
-    # '123456789', # Пример ID пользователя
-    # 'another_user_nickname',
-]
-
-# Название для первой беседы, создаваемой по команде /create_default_chat
-DEFAULT_CHAT_TITLE = 'Автоматическая беседа'
-
-# Базовое название для бесед, создаваемых по команде /create_chat_with_user
-SECONDARY_CHAT_BASE_TITLE = 'Беседа с '
-
-# --- Инициализация клиента Telethon ---
-# Создаем клиент Telegram, который будет работать как пользовательский аккаунт
-client = TelegramClient(SESSION_NAME, API_ID, API_HASH)
-
-# --- Обработчик команды /start ---
-# При получении сообщения "/start" в личном чате с ботом, он ответит приветствием.
-@client.on(events.NewMessage(pattern='/start'))
-async def start_handler(event):
-    # Проверяем, что команда отправлена в личный чат
-    if event.is_private:
-        await event.respond('Привет! Я готов создавать беседы от имени вашего аккаунта.')
-    else:
-        # Если команда отправлена в группе, игнорируем или отвечаем, что это личная команда
-        pass
-
-# --- Обработчик команды для создания первой беседы ---
-# Эта команда создаст беседу и добавит в нее пользователей из DEFAULT_USERS_TO_ADD.
-# Использование: /create_default_chat
-@client.on(events.NewMessage(pattern='/create_default_chat'))
-async def create_default_chat_handler(event):
-    # Убедимся, что команда отправлена в личный чат с ботом, чтобы избежать случайных срабатываний в группах.
-    if event.is_private:
-        await event.respond('Начинаю создание стандартной беседы...')
-        try:
-            # Получаем объекты InputUser для каждого пользователя из списка
-            # Это необходимо для добавления пользователей в чат
-            participants_entities = []
-            for user_identifier in DEFAULT_USERS_TO_ADD:
-                try:
-                    # Пытаемся получить сущность пользователя (объект, представляющий пользователя)
-                    user_entity = await client.get_entity(user_identifier)
-                    # Создаем InputUser объект, который нужен для CreateChatRequest
-                    participants_entities.append(InputUser(user_entity.id, user_entity.access_hash))
-                except Exception as e:
-                    # Если пользователя не удалось найти, сообщаем об этом и прекращаем операцию
-                    await event.respond(f"Ошибка: Не удалось найти пользователя '{user_identifier}'. Проверьте ник или ID. {e}")
-                    return # Прерываем выполнение, если не удалось найти кого-то из списка
-
-            if not participants_entities:
-                await event.respond("Ошибка: Список пользователей для добавления пуст. Добавьте пользователей в DEFAULT_USERS_TO_ADD.")
-                return
-
-            # Создаем новую беседу (групповой чат)
-            # CreateChatRequest требует список InputUser объектов и название чата
-            result = await client(CreateChatRequest(
-                users=participants_entities,
-                title=DEFAULT_CHAT_TITLE
-            ))
-            # Отправляем подтверждение об успешном создании
-            await event.respond(f'Стандартная беседа "{DEFAULT_CHAT_TITLE}" успешно создана!')
-        except Exception as e:
-            # Обработка любых ошибок, которые могут возникнуть в процессе
-            await event.respond(f'Произошла ошибка при создании стандартной беседы: {e}')
-    else:
-        await event.respond('Эту команду можно использовать только в личном чате со мной.')
-
-# --- Обработчик команды для создания беседы с указанным пользователем ---
-# Эта команда создаст беседу с одним конкретным пользователем, чей ник будет указан.
-# Использование: /create_chat_with_user @ник_пользователя
-@client.on(events.NewMessage(pattern='/create_chat_with_user (.+)'))
-async def create_chat_with_user_handler(event):
-    # Убедимся, что команда отправлена в личный чат с ботом
-    if event.is_private:
-        # Извлекаем ник пользователя из сообщения
-        username_to_add = event.pattern_match.group(1).strip()
-        await event.respond(f'Начинаю создание беседы с {username_to_add}...')
-        try:
-            # Получаем сущность пользователя по его нику
-            user_entity = await client.get_entity(username_to_add)
-            # Создаем список из одного InputUser объекта для этого пользователя
-            participants = [InputUser(user_entity.id, user_entity.access_hash)]
-
-            # Формируем название беседы, используя имя пользователя
-            chat_title = f"{SECONDARY_CHAT_BASE_TITLE}{user_entity.first_name or username_to_add}"
-
-            # Создаем новую беседу
-            result = await client(CreateChatRequest(
-                users=participants,
-                title=chat_title
-            ))
-            # Отправляем подтверждение об успешном создании
-            await event.respond(f'Беседа "{chat_title}" успешно создана!')
-        except ValueError:
-            # Если get_entity не нашел пользователя
-            await event.respond(f'Ошибка: Пользователь "{username_to_add}" не найден. Проверьте ник.')
-        except Exception as e:
-            # Обработка других возможных ошибок
-            await event.respond(f'Произошла ошибка при создании беседы с {username_to_add}: {e}')
-    else:
-        await event.respond('Эту команду можно использовать только в личном чате со мной.')
-
-# --- Главная функция для запуска бота ---
-async def main():
-    print("Запускаю клиент Telegram...")
-    # Запускаем клиент. Если это первый запуск, Telethon запросит номер телефона и код авторизации.
-    await client.start(phone=PHONE_NUMBER)
-    print("Клиент запущен. Бот готов к работе!")
-    # Бот будет работать до тех пор, пока не будет отключен (например, по Ctrl+C)
-    await client.run_until_disconnected()
-
-# --- Точка входа в скрипт ---
-if __name__ == '__main__':
-    import asyncio
-    # Запускаем асинхронную функцию main
-    asyncio.run(main())
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(180deg, #e8f4fc 0%, #ffffff 100%);
+            min-height: 100vh;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Декоративные элементы */
+        .decor-top-left, .decor-top-right, .decor-bottom-left, .decor-bottom-right {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.6;
+        }
+        .decor-top-left { top: 20px; left: 20px; }
+        .decor-top-right { top: 20px; right: 20px; }
+        .decor-bottom-left { bottom: 20px; left: 20px; }
+        .decor-bottom-right { bottom: 20px; right: 20px; }
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="20" font-size="20" fill="%23b8d4e8" opacity="0.5">❄</text><text x="50" y="40" font-size="15" fill="%23b8d4e8" opacity="0.4">❄</text><text x="80" y="25" font-size="12" fill="%23b8d4e8" opacity="0.3">❄</text></svg>') repeat-x;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,80,150,0.1);
+            padding: 30px 40px;
+            border: 2px solid #d4e5f7;
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e8f0f8;
+        }
+        .header h1 {
+            color: #1a5490;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .header h1 span { color: #c41e3a; }
+        .header p {
+            color: #5a7a9a;
+            font-size: 16px;
+        }
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .city-block {
+            background: #f8fbfe;
+            border: 1px solid #dce8f3;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .city-name {
+            background: linear-gradient(135deg, #1a5490 0%, #2d6aa8 100%);
+            color: white;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        .city-name.accent {
+            background: linear-gradient(135deg, #1a5490 0%, #0d4275 100%);
+        }
+        .dates-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .dates-table td {
+            padding: 8px 15px;
+            font-size: 13px;
+            border-bottom: 1px solid #e8f0f8;
+            color: #2c3e50;
+        }
+        .dates-table tr:last-child td { border-bottom: none; }
+        .dates-table tr:nth-child(even) { background: #f0f6fc; }
+        .date-from { font-weight: 600; color: #1a5490; }
+        .arrow { color: #888; padding: 0 8px; }
+        .date-to { font-weight: 600; color: #27ae60; }
+        .date-2026 { color: #c41e3a; }
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #e8f0f8;
+            color: #7a9ab8;
+            font-size: 13px;
+        }
+        .footer .icons { font-size: 20px; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="decor-top-left">🎄</div>
+    <div class="decor-top-right">⭐</div>
+    <div class="decor-bottom-left">🎁</div>
+    <div class="decor-bottom-right">🎄</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📦 График отгрузок • <span>2025–2026</span></h1>
+            <p>Актуальное расписание на праздничный период</p>
+        </div>
+        
+        <div class="schedule-grid">
+            <!-- КАЗАНЬ -->
+            <div class="city-block">
+                <div class="city-name">🚚 КАЗАНЬ</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">23.12.2025</span><span class="arrow">→</span><span class="date-to">26.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">25.12.2025</span><span class="arrow">→</span><span class="date-to">28.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">28.12.2025</span><span class="arrow">→</span><span class="date-to">31.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">08.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">10.01.2026</span></td></tr>
+                </table>
+            </div>
+            
+            <!-- КРАСНОДАР -->
+            <div class="city-block">
+                <div class="city-name">🚚 КРАСНОДАР</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">22.12.2025</span><span class="arrow">→</span><span class="date-to">25.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">23.12.2025</span><span class="arrow">→</span><span class="date-to">26.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">25.12.2025</span><span class="arrow">→</span><span class="date-to">29.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to date-2026">01.01.2026</span></td></tr>
+                    <tr><td><span class="date-from">08.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">12.01.2026</span></td></tr>
+                </table>
+            </div>
+            
+            <!-- НОВОСЕМЕЙКИНО -->
+            <div class="city-block">
+                <div class="city-name">🚚 НОВОСЕМЕЙКИНО</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">23.12.2025</span><span class="arrow">→</span><span class="date-to">27.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">23.12.2025</span><span class="arrow">→</span><span class="date-to">26.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">25.12.2025</span><span class="arrow">→</span><span class="date-to">31.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to date-2026">03.01.2026</span></td></tr>
+                    <tr><td><span class="date-from">08.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">14.01.2026</span></td></tr>
+                </table>
+            </div>
+            
+            <!-- ЕКАТЕРИНБУРГ -->
+            <div class="city-block">
+                <div class="city-name">🚚 ЕКАТЕРИНБУРГ</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">18.12.2025</span><span class="arrow">→</span><span class="date-to">25.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">23.12.2025</span><span class="arrow">→</span><span class="date-to">26.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">24.12.2025</span><span class="arrow">→</span><span class="date-to">29.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">24.12.2025</span><span class="arrow">→</span><span class="date-to date-2026">01.01.2026</span></td></tr>
+                    <tr><td><span class="date-from">08.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">12.01.2026</span></td></tr>
+                </table>
+            </div>
+            
+            <!-- САРАПУЛ -->
+            <div class="city-block">
+                <div class="city-name">🚚 САРАПУЛ</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">22.12.2025</span><span class="arrow">→</span><span class="date-to">25.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">24.12.2025</span><span class="arrow">→</span><span class="date-to">27.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to date-2026">01.01.2026</span></td></tr>
+                    <tr><td><span class="date-from">12.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">15.01.2026</span></td></tr>
+                </table>
+            </div>
+            
+            <!-- РЯЗАНЬ -->
+            <div class="city-block">
+                <div class="city-name">🚚 РЯЗАНЬ</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">22.12.2025</span><span class="arrow">→</span><span class="date-to">24.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">23.12.2025</span><span class="arrow">→</span><span class="date-to">25.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">24.12.2025</span><span class="arrow">→</span><span class="date-to">26.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">25.12.2025</span><span class="arrow">→</span><span class="date-to">27.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to">31.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to date-2026">01.01.2026</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to date-2026">02.01.2026</span></td></tr>
+                    <tr><td><span class="date-from">08.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">10.01.2026</span></td></tr>
+                </table>
+            </div>
+            
+            <!-- ТУЛА -->
+            <div class="city-block">
+                <div class="city-name">🚚 ТУЛА</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">20.12.2025</span><span class="arrow">→</span><span class="date-to">20.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">24.12.2025</span><span class="arrow">→</span><span class="date-to">24.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">27.12.2025</span><span class="arrow">→</span><span class="date-to">27.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to">30.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">29.12.2025</span><span class="arrow">→</span><span class="date-to">31.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">07.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">07.01.2026</span></td></tr>
+                </table>
+            </div>
+            
+            <!-- ЭЛЕКТРОСТАЛЬ И КОЛЕДИНО -->
+            <div class="city-block">
+                <div class="city-name accent">🚚 ЭЛЕКТРОСТАЛЬ И КОЛЕДИНО</div>
+                <table class="dates-table">
+                    <tr><td><span class="date-from">20.12.2025</span><span class="arrow">→</span><span class="date-to">20.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">24.12.2025</span><span class="arrow">→</span><span class="date-to">24.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">28.12.2025</span><span class="arrow">→</span><span class="date-to">28.12.2025</span></td></tr>
+                    <tr><td><span class="date-from">07.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">07.01.2026</span></td></tr>
+                    <tr><td><span class="date-from">10.01.2026</span><span class="arrow">→</span><span class="date-to date-2026">10.01.2026</span></td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="icons">🎄 ❄️ 🎁 ❄️ 🎄</div>
+            С наступающим Новым годом! Желаем успешных поставок!
+        </div>
+    </div>
+</body>
+</html>
