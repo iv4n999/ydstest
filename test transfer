@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>График отгрузок • 2025–2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary-green: #1a472a;
+            --light-green: #2e7d32;
+            --gold: #c9a227;
+            --red: #c41e3a;
+            --blue: #1565c0;
+            --bg-dark: #0a1628;
+        }
+        
+        body {
+            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            padding: 30px;
+            position: relative;
+            overflow-x: hidden;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(10, 25, 47, 0.95) 0%, 
+                    rgba(20, 50, 80, 0.9) 30%,
+                    rgba(15, 60, 70, 0.9) 60%,
+                    rgba(10, 35, 50, 0.95) 100%
+                ),
+                url('https://images.unsplash.com/photo-1511883040705-6011fad9edfc?w=1920&q=80') center/cover fixed;
+        }
+        
+        /* ===== БОКЕ ЭФФЕКТ ===== */
+        .bokeh {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .bokeh-light {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(3px);
+            animation: float 6s ease-in-out infinite;
+        }
+        .bokeh-light:nth-child(1) { width: 80px; height: 80px; background: radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 70%); top: 10%; left: 5%; }
+        .bokeh-light:nth-child(2) { width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,100,100,0.3) 0%, transparent 70%); top: 20%; right: 10%; animation-delay: 1s; }
+        .bokeh-light:nth-child(3) { width: 60px; height: 60px; background: radial-gradient(circle, rgba(100,200,255,0.4) 0%, transparent 70%); top: 50%; left: 8%; animation-delay: 2s; }
+        .bokeh-light:nth-child(4) { width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,180,0,0.35) 0%, transparent 70%); top: 70%; right: 5%; animation-delay: 0.5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+        }
+        
+        /* ===== ЁЛОЧНЫЕ ВЕТКИ ===== */
+        .branch {
+            position: fixed;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .branch-top-left {
+            top: -20px; left: -20px;
+            width: 300px; height: 250px;
+            background: url('https://images.unsplash.com/photo-1545048702-79362596cdc9?w=800&q=80') no-repeat center/cover;
+            transform: rotate(15deg);
+            filter: brightness(0.9);
+            mask-image: radial-gradient(ellipse 80% 70% at 20% 20%, black 40%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 20% 20%, black 40%, transparent 70%);
+        }
+        .branch-top-right {
+            top: -30px; right: -30px;
+            width: 320px; height: 270px;
+            background: url('https://images.unsplash.com/photo-1545048702-79362596cdc9?w=800&q=80') no-repeat center/cover;
+            transform: scaleX(-1) rotate(10deg);
+            filter: brightness(0.85);
+            mask-image: radial-gradient(ellipse 75% 65% at 80% 20%, black 35%, transparent 65%);
+            -webkit-mask-image: radial-gradient(ellipse 75% 65% at 80% 20%, black 35%, transparent 65%);
+        }
+        .branch-bottom-left {
+            bottom: -40px; left: -30px;
+            width: 280px; height: 240px;
+            background: url('https://images.unsplash.com/photo-1512389098783-66b81f86e199?w=800&q=80') no-repeat center/cover;
+            transform: rotate(-5deg);
+            filter: brightness(0.8);
+            mask-image: radial-gradient(ellipse 70% 80% at 15% 85%, black 30%, transparent 60%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 80% at 15% 85%, black 30%, transparent 60%);
+        }
+        .branch-bottom-right {
+            bottom: -30px; right: -20px;
+            width: 300px; height: 260px;
+            background: url('https://images.unsplash.com/photo-1512389098783-66b81f86e199?w=800&q=80') no-repeat center/cover;
+            transform: scaleX(-1) rotate(-10deg);
+            filter: brightness(0.85);
+            mask-image: radial-gradient(ellipse 65% 75% at 85% 80%, black 35%, transparent 65%);
+            -webkit-mask-image: radial-gradient(ellipse 65% 75% at 85% 80%, black 35%, transparent 65%);
+        }
+        
+        /* ===== СНЕЖИНКИ ===== */
+        .snow-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            overflow: hidden;
+        }
+        .snowflake {
+            position: absolute;
+            top: -50px;
+            color: white;
+            opacity: 0.8;
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+            animation: snowfall linear infinite;
+        }
+        @keyframes snowfall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        .snowflake:nth-child(1) { left: 5%; font-size: 18px; animation-duration: 15s; }
+        .snowflake:nth-child(2) { left: 15%; font-size: 12px; animation-duration: 12s; animation-delay: 2s; }
+        .snowflake:nth-child(3) { left: 25%; font-size: 20px; animation-duration: 18s; animation-delay: 4s; }
+        .snowflake:nth-child(4) { left: 35%; font-size: 14px; animation-duration: 14s; animation-delay: 1s; }
+        .snowflake:nth-child(5) { left: 45%; font-size: 16px; animation-duration: 16s; animation-delay: 3s; }
+        .snowflake:nth-child(6) { left: 55%; font-size: 22px; animation-duration: 13s; animation-delay: 5s; }
+        .snowflake:nth-child(7) { left: 65%; font-size: 10px; animation-duration: 17s; animation-delay: 2s; }
+        .snowflake:nth-child(8) { left: 75%; font-size: 18px; animation-duration: 11s; animation-delay: 4s; }
+        .snowflake:nth-child(9) { left: 85%; font-size: 15px; animation-duration: 19s; animation-delay: 1s; }
+        .snowflake:nth-child(10) { left: 95%; font-size: 13px; animation-duration: 14s; animation-delay: 3s; }
+        
+        /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(248,252,255,0.98) 100%);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4), 0 0 100px rgba(255,200,100,0.15);
+            padding: 35px 45px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(180,140,80,0.3);
+        }
+        
+        /* ===== ПАНЕЛЬ УПРАВЛЕНИЯ ===== */
+        .admin-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admin-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+        }
+        .admin-toggle.active {
+            background: linear-gradient(135deg, var(--red), #a91e4a);
+        }
+        
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal h3 {
+            color: var(--primary-green);
+            margin-bottom: 20px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--light-green);
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,100,0,0.3); }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--red), #a91e4a);
+            color: white;
+        }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(200,0,0,0.3); }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn-secondary:hover { background: #d0d0d0; }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            justify-content: flex-end;
+        }
+        
+        /* ===== ЗАГОЛОВОК ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            border-radius: 2px;
+        }
+        .header-icon { font-size: 45px; margin-bottom: 12px; display: block; }
+        .header h1 {
+            color: #1a3a5c;
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .header h1 .year {
+            background: linear-gradient(135deg, #b8860b, #daa520);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p { color: var(--light-green); font-size: 16px; font-weight: 500; }
+        .header-stars { margin-top: 12px; font-size: 18px; letter-spacing: 10px; opacity: 0.8; }
+        
+        /* Статус автообновления */
+        .auto-update-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46, 125, 50, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--light-green);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--light-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        /* ===== СЕТКА ГОРОДОВ ===== */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .schedule-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* ===== БЛОК ГОРОДА ===== */
+        .city-block {
+            background: linear-gradient(180deg, #ffffff 0%, #f8faf8 100%);
+            border: 1px solid #c5d8c5;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,80,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .city-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,80,0,0.12);
+        }
+        .city-block.empty {
+            opacity: 0.5;
+            border-style: dashed;
+        }
+        
+        .city-header {
+            background: linear-gradient(135deg, var(--primary-green), #2d5a3d);
+            color: white;
+            padding: 14px 18px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+        }
+        .city-header .city-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .city-header .city-title .icon { font-size: 20px; }
+        .city-header.special {
+            background: linear-gradient(135deg, #8b1538, #a91e4a);
+        }
+        
+        /* Кнопка добавления в заголовке города */
+        .add-date-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .add-date-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        body.edit-mode .add-date-btn { display: flex; }
+        
+        /* ===== ТАБЛИЦА ДАТ ===== */
+        .dates-list {
+            padding: 5px 0;
+        }
+        .date-row {
+            padding: 10px 18px;
+            font-size: 14px;
+            border-bottom: 1px solid #e8f0e8;
+            color: #2c3e50;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+        .date-row:last-child { border-bottom: none; }
+        .date-row:nth-child(even) { background: rgba(34,139,34,0.03); }
+        .date-row:hover { background: rgba(255,215,0,0.08); }
+        
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .date-from { font-weight: 700; color: var(--blue); }
+        .arrow { color: var(--light-green); padding: 0 10px; font-weight: bold; }
+        .date-to { font-weight: 700; color: var(--light-green); }
+        .date-to.year-2026 { color: var(--red); }
+        
+        /* Кнопки редактирования строки */
+        .row-actions {
+            display: none;
+            gap: 8px;
+        }
+        body.edit-mode .row-actions { display: flex; }
+        
+        .row-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            border-radius: 5px;
+            transition: all 0.2s;
+            opacity: 0.6;
+        }
+        .row-btn:hover { opacity: 1; transform: scale(1.2); }
+        .row-btn.edit:hover { background: rgba(21, 101, 192, 0.1); }
+        .row-btn.delete:hover { background: rgba(196, 30, 58, 0.1); }
+        
+        /* Сообщение "Нет отгрузок" */
+        .no-dates {
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            font-style: italic;
+        }
+        
+        /* ===== ПАНЕЛЬ ДОБАВЛЕНИЯ ГОРОДА ===== */
+        .add-city-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(34,139,34,0.05);
+            border: 2px dashed var(--light-green);
+            border-radius: 14px;
+            text-align: center;
+        }
+        body.edit-mode .add-city-panel { display: block; }
+        
+        .add-city-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        .add-city-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,100,0,0.3);
+        }
+        
+        /* ===== ФУТЕР ===== */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            position: relative;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            border-radius: 2px;
+        }
+        .footer-icons { font-size: 35px; margin-bottom: 15px; letter-spacing: 12px; }
+        .footer-text { color: var(--primary-green); font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .footer-subtext { color: #5a7a6a; font-size: 14px; }
+        
+        /* ===== УВЕДОМЛЕНИЯ ===== */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            max-width: 350px;
+        }
+        .notification.show { transform: translateX(0); }
+        .notification.success { border-left: 4px solid var(--light-green); }
+        .notification.error { border-left: 4px solid var(--red); }
+        .notification.info { border-left: 4px solid var(--blue); }
+        .notification-icon { font-size: 24px; }
+        .notification-text { font-size: 14px; color: #333; }
+        
+        /* ===== СЧЁТЧИК УДАЛЁННЫХ ===== */
+        .deleted-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(255,255,255,0.95);
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 100;
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .deleted-counter strong { color: var(--red); }
+    </style>
+</head>
+<body>
+    <!-- Декоративные элементы -->
+    <div class="bokeh">
+        <div class="bokeh-light"></div>
+        <div class="bokeh-light"></div>
+        <div class="bokeh-light"></div>
+        <div class="bokeh-light"></div>
+    </div>
+    
+    <div class="branch branch-top-left"></div>
+    <div class="branch branch-top-right"></div>
+    <div class="branch branch-bottom-left"></div>
+    <div class="branch branch-bottom-right"></div>
+    
+    <div class="snow-container">
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+    </div>
+    
+    <!-- Кнопка режима редактирования -->
+    <button class="admin-toggle" onclick="toggleEditMode()">
+        <span>⚙️</span>
+        <span class="toggle-text">Режим редактирования</span>
+    </button>
+    
+    <!-- Основной контейнер -->
+    <div class="container">
+        <div class="header">
+            <span class="header-icon">📦</span>
+            <h1>График отгрузок • <span class="year">2025–2026</span></h1>
+            <p>Актуальное расписание на праздничный период</p>
+            <div class="header-stars">✦ ✧ ★ ✧ ✦</div>
+            <div class="auto-update-status">
+                <span class="status-dot"></span>
+                Автообновление: просроченные даты удаляются автоматически
+            </div>
+        </div>
+        
+        <div class="schedule-grid" id="scheduleGrid">
+            <!-- Города будут добавлены через JavaScript -->
+        </div>
+        
+        <div class="add-city-panel">
+            <button class="add-city-btn" onclick="openAddCityModal()">
+                <span>➕</span> Добавить новое направление
+            </button>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-icons">🎄✨🎅✨🎄</div>
+            <div class="footer-text">С наступающим Новым 2026 годом!</div>
+            <div class="footer-subtext">Желаем успешных поставок и процветания вашему бизнесу ❄️</div>
+        </div>
+    </div>
+    
+    <!-- Счётчик удалённых -->
+    <div class="deleted-counter" id="deletedCounter" style="display: none;">
+        🗑️ Автоудалено: <strong id="deletedCount">0</strong> просроченных отгрузок
+    </div>
+    
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+        <div class="modal" id="modal">
+            <!-- Контент будет добавляться динамически -->
+        </div>
+    </div>
+    
+    <!-- Уведомления -->
+    <div class="notification" id="notification">
+        <span class="notification-icon"></span>
+        <span class="notification-text"></span>
+    </div>
+
+    <script>
+        // ===== ДАННЫЕ =====
+        const DEFAULT_DATA = {
+            cities: [
+                {
+                    id: 1,
+                    name: "КАЗАНЬ",
+                    icon: "🚚",
+                    special: false,
+                    dates: [
+                        { id: 1, from: "2025-12-23", to: "2025-12-26" },
+                        { id: 2, from: "2025-12-25", to: "2025-12-28" },
+                        { id: 3, from: "2025-12-28", to: "2025-12-31" },
+                        { id: 4, from: "2026-01-08", to: "2026-01-10" }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "КРАСНОДАР",
+                    icon: "🚚",
+                    special: false,
+                    dates: [
+                        { id: 1, from: "2025-12-22", to: "2025-12-25" },
+                        { id: 2, from: "2025-12-23", to: "2025-12-26" },
+                        { id: 3, from: "2025-12-25", to: "2025-12-29" },
+                        { id: 4, from: "2025-12-29", to: "2026-01-01" },
+                        { id: 5, from: "2026-01-08", to: "2026-01-12" }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "НОВОСЕМЕЙКИНО",
+                    icon: "🚚",
+                    special: false,
+                    dates: [
+                        { id: 1, from: "2025-12-23", to: "2025-12-27" },
+                        { id: 2, from: "2025-12-23", to: "2025-12-26" },
+                        { id: 3, from: "2025-12-25", to: "2025-12-31" },
+                        { id: 4, from: "2025-12-29", to: "2026-01-03" },
+                        { id: 5, from: "2026-01-08", to: "2026-01-14" }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "ЕКАТЕРИНБУРГ",
+                    icon: "🚚",
+                    special: false,
+                    dates: [
+                        { id: 1, from: "2025-12-18", to: "2025-12-25" },
+                        { id: 2, from: "2025-12-23", to: "2025-12-26" },
+                        { id: 3, from: "2025-12-24", to: "2025-12-29" },
+                        { id: 4, from: "2025-12-24", to: "2026-01-01" },
+                        { id: 5, from: "2026-01-08", to: "2026-01-12" }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "САРАПУЛ",
+                    icon: "🚚",
+                    special: false,
+                    dates: [
+                        { id: 1, from: "2025-12-22", to: "2025-12-25" },
+                        { id: 2, from: "2025-12-24", to: "2025-12-27" },
+                        { id: 3, from: "2025-12-29", to: "2026-01-01" },
+                        { id: 4, from: "2026-01-12", to: "2026-01-15" }
+                    ]
+                },
+                {
+                    id: 6,
+                    name: "РЯЗАНЬ",
+                    icon: "🚚",
+                    special: false,
+                    dates: [
+                        { id: 1, from: "2025-12-22", to: "2025-12-24" },
+                        { id: 2, from: "2025-12-23", to: "2025-12-25" },
+                        { id: 3, from: "2025-12-24", to: "2025-12-26" },
+                        { id: 4, from: "2025-12-25", to: "2025-12-27" },
+                        { id: 5, from: "2025-12-29", to: "2025-12-31" },
+                        { id: 6, from: "2025-12-29", to: "2026-01-01" },
+                        { id: 7, from: "2025-12-29", to: "2026-01-02" },
+                        { id: 8, from: "2026-01-08", to: "2026-01-10" }
+                    ]
+                },
+                {
+                    id: 7,
+                    name: "ТУЛА",
+                    icon: "🚚",
+                    special: false,
+                    dates: [
+                        { id: 1, from: "2025-12-20", to: "2025-12-20" },
+                        { id: 2, from: "2025-12-24", to: "2025-12-24" },
+                        { id: 3, from: "2025-12-27", to: "2025-12-27" },
+                        { id: 4, from: "2025-12-29", to: "2025-12-30" },
+                        { id: 5, from: "2025-12-29", to: "2025-12-31" },
+                        { id: 6, from: "2026-01-07", to: "2026-01-07" }
+                    ]
+                },
+                {
+                    id: 8,
+                    name: "ЭЛЕКТРОСТАЛЬ И КОЛЕДИНО",
+                    icon: "🎁",
+                    special: true,
+                    dates: [
+                        { id: 1, from: "2025-12-20", to: "2025-12-20" },
+                        { id: 2, from: "2025-12-24", to: "2025-12-24" },
+                        { id: 3, from: "2025-12-28", to: "2025-12-28" },
+                        { id: 4, from: "2026-01-07", to: "2026-01-07" },
+                        { id: 5, from: "2026-01-10", to: "2026-01-10" }
+                    ]
+                }
+            ],
+            deletedCount: 0
+        };
+        
+        // ===== СОСТОЯНИЕ =====
+        let scheduleData = loadData();
+        let editMode = false;
+        let currentEditCity = null;
+        let currentEditDate = null;
+        
+        // ===== ЗАГРУЗКА/СОХРАНЕНИЕ ДАННЫХ =====
+        function loadData() {
+            const saved = localStorage.getItem('scheduleData');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return JSON.parse(JSON.stringify(DEFAULT_DATA));
+        }
+        
+        function saveData() {
+            localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+        }
+        
+        function resetToDefault() {
+            if (confirm('Вы уверены? Все изменения будут потеряны и данные вернутся к исходным.')) {
+                scheduleData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                saveData();
+                renderSchedule();
+                showNotification('Данные сброшены к исходным', 'info');
+            }
+        }
+        
+        // ===== ФОРМАТИРОВАНИЕ ДАТ =====
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+        
+        function isYear2026(dateStr) {
+            return dateStr.startsWith('2026');
+        }
+        
+        // ===== ПРОВЕРКА И УДАЛЕНИЕ ПРОСРОЧЕННЫХ =====
+        function removeExpiredDates() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            let removedCount = 0;
+            
+            scheduleData.cities.forEach(city => {
+                const originalLength = city.dates.length;
+                city.dates = city.dates.filter(date => {
+                    const fromDate = new Date(date.from);
+                    fromDate.setHours(0, 0, 0, 0);
+                    return fromDate >= today;
+                });
+                removedCount += originalLength - city.dates.length;
+            });
+            
+            if (removedCount > 0) {
+                scheduleData.deletedCount += removedCount;
+                saveData();
+                renderSchedule();
+                updateDeletedCounter();
+                showNotification(`Удалено ${removedCount} просроченных отгрузок`, 'info');
+            }
+            
+            return removedCount;
+        }
+        
+        function updateDeletedCounter() {
+            const counter = document.getElementById('deletedCounter');
+            const countEl = document.getElementById('deletedCount');
+            if (scheduleData.deletedCount > 0) {
+                counter.style.display = 'flex';
+                countEl.textContent = scheduleData.deletedCount;
+            }
+        }
+        
+        // ===== РЕНДЕР РАСПИСАНИЯ =====
+        function renderSchedule() {
+            const grid = document.getElementById('scheduleGrid');
+            grid.innerHTML = '';
+            
+            scheduleData.cities.forEach(city => {
+                const cityEl = document.createElement('div');
+                cityEl.className = `city-block${city.dates.length === 0 ? ' empty' : ''}`;
+                cityEl.innerHTML = `
+                    <div class="city-header${city.special ? ' special' : ''}">
+                        <div class="city-title">
+                            <span class="icon">${city.icon}</span>
+                            <span>${city.name}</span>
+                        </div>
+                        <button class="add-date-btn" onclick="openAddDateModal(${city.id})" title="Добавить отгрузку">+</button>
+                    </div>
+                    <div class="dates-list" id="dates-${city.id}">
+                        ${city.dates.length === 0 ? '<div class="no-dates">Нет запланированных отгрузок</div>' : ''}
+                        ${city.dates.map(date => `
+                            <div class="date-row" data-city="${city.id}" data-date="${date.id}">
+                                <div class="date-info">
+                                    <span class="date-from">${formatDate(date.from)}</span>
+                                    <span class="arrow">→</span>
+                                    <span class="date-to${isYear2026(date.to) ? ' year-2026' : ''}">${formatDate(date.to)}</span>
+                                </div>
+                                <div class="row-actions">
+                                    <button class="row-btn edit" onclick="openEditDateModal(${city.id}, ${date.id})" title="Редактировать">✏️</button>
+                                    <button class="row-btn delete" onclick="deleteDate(${city.id}, ${date.id})" title="Удалить">🗑️</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                grid.appendChild(cityEl);
+            });
+        }
+        
+        // ===== РЕЖИМ РЕДАКТИРОВАНИЯ =====
+        function toggleEditMode() {
+            editMode = !editMode;
+            document.body.classList.toggle('edit-mode', editMode);
+            const btn = document.querySelector('.admin-toggle');
+            btn.classList.toggle('active', editMode);
+            btn.querySelector('.toggle-text').textContent = editMode ? 'Выйти из редактирования' : 'Режим редактирования';
+            btn.querySelector('span:first-child').textContent = editMode ? '✖️' : '⚙️';
+        }
+        
+        // ===== МОДАЛЬНЫЕ ОКНА =====
+        function openModal(content) {
+            document.getElementById('modal').innerHTML = content;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            currentEditCity = null;
+            currentEditDate = null;
+        }
+        
+        function closeModalOnOverlay(event) {
+            if (event.target === document.getElementById('modalOverlay')) {
+                closeModal();
+            }
+        }
+        
+        // Добавление отгрузки
+        function openAddDateModal(cityId) {
+            currentEditCity = cityId;
+            const city = scheduleData.cities.find(c => c.id === cityId);
+            
+            openModal(`
+                <h3>➕ Добавить отгрузку</h3>
+                <p style="color: #666; margin-bottom: 20px;">Направление: <strong>${city.name}</strong></p>
+                <div class="form-group">
+                    <label>Дата отправки</label>
+                    <input type="date" id="dateFrom" required>
+                </div>
+                <div class="form-group">
+                    <label>Дата доставки</label>
+                    <input type="date" id="dateTo" required>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                    <button class="btn btn-primary" onclick="addDate()">➕ Добавить</button>
+                </div>
+            `);
+        }
+        
+        function addDate() {
+            const from = document.getElementById('dateFrom').value;
+            const to = document.getElementById('dateTo').value;
+            
+            if (!from || !to) {
+                showNotification('Заполните обе даты', 'error');
+                return;
+            }
+            
+            if (new Date(to) < new Date(from)) {
+                showNotification('Дата доставки не может быть раньше даты отправки', 'error');
+                return;
+            }
+            
+            const city = scheduleData.cities.find(c => c.id === currentEditCity);
+            const newId = city.dates.length > 0 ? Math.max(...city.dates.map(d => d.id)) + 1 : 1;
+            
+            city.dates.push({ id: newId, from, to });
+            city.dates.sort((a, b) => new Date(a.from) - new Date(b.from));
+            
+            saveData();
+            renderSchedule();
+            closeModal();
+            showNotification('Отгрузка добавлена', 'success');
+        }
+        
+        // Редактирование отгрузки
+        function openEditDateModal(cityId, dateId) {
+            currentEditCity = cityId;
+            currentEditDate = dateId;
+            
+            const city = scheduleData.cities.find(c => c.id === cityId);
+            const date = city.dates.find(d => d.id === dateId);
+            
+            openModal(`
+                <h3>✏️ Редактировать отгрузку</h3>
+                <p style="color: #666; margin-bottom: 20px;">Направление: <strong>${city.name}</strong></p>
+                <div class="form-group">
+                    <label>Дата отправки</label>
+                    <input type="date" id="dateFrom" value="${date.from}" required>
+                </div>
+                <div class="form-group">
+                    <label>Дата доставки</label>
+                    <input type="date" id="dateTo" value="${date.to}" required>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                    <button class="btn btn-primary" onclick="updateDate()">💾 Сохранить</button>
+                </div>
+            `);
+        }
+        
+        function updateDate() {
+            const from = document.getElementById('dateFrom').value;
+            const to = document.getElementById('dateTo').value;
+            
+            if (!from || !to) {
+                showNotification('Заполните обе даты', 'error');
+                return;
+            }
+            
+            if (new Date(to) < new Date(from)) {
+                showNotification('Дата доставки не может быть раньше даты отправки', 'error');
+                return;
+            }
+            
+            const city = scheduleData.cities.find(c => c.id === currentEditCity);
+            const date = city.dates.find(d => d.id === currentEditDate);
+            
+            date.from = from;
+            date.to = to;
+            city.dates.sort((a, b) => new Date(a.from) - new Date(b.from));
+            
+            saveData();
+            renderSchedule();
+            closeModal();
+            showNotification('Отгрузка обновлена', 'success');
+        }
+        
+        // Удаление отгрузки
+        function deleteDate(cityId, dateId) {
+            if (!confirm('Удалить эту отгрузку?')) return;
+            
+            const city = scheduleData.cities.find(c => c.id === cityId);
+            city.dates = city.dates.filter(d => d.id !== dateId);
+            
+            saveData();
+            renderSchedule();
+            showNotification('Отгрузка удалена', 'success');
+        }
+        
+        // Добавление нового города
+        function openAddCityModal() {
+            openModal(`
+                <h3>🏙️ Добавить направление</h3>
+                <div class="form-group">
+                    <label>Название города/направления</label>
+                    <input type="text" id="cityName" placeholder="Например: МОСКВА" required>
+                </div>
+                <div class="form-group">
+                    <label>Иконка</label>
+                    <select id="cityIcon">
+                        <option value="🚚">🚚 Грузовик</option>
+                        <option value="📦">📦 Коробка</option>
+                        <option value="🎁">🎁 Подарок</option>
+                        <option value="🏭">🏭 Склад</option>
+                        <option value="🏢">🏢 Здание</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="citySpecial"> Особое направление (красный заголовок)
+                    </label>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                    <button class="btn btn-primary" onclick="addCity()">➕ Добавить</button>
+                </div>
+            `);
+        }
+        
+        function addCity() {
+            const name = document.getElementById('cityName').value.trim().toUpperCase();
+            const icon = document.getElementById('cityIcon').value;
+            const special = document.getElementById('citySpecial').checked;
+            
+            if (!name) {
+                showNotification('Введите название направления', 'error');
+                return;
+            }
+            
+            const newId = Math.max(...scheduleData.cities.map(c => c.id)) + 1;
+            
+            scheduleData.cities.push({
+                id: newId,
+                name,
+                icon,
+                special,
+                dates: []
+            });
+            
+            saveData();
+            renderSchedule();
+            closeModal();
+            showNotification('Направление добавлено', 'success');
+        }
+        
+        // ===== УВЕДОМЛЕНИЯ =====
+        function showNotification(message, type = 'info') {
+            const notif = document.getElementById('notification');
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            
+            notif.className = `notification ${type}`;
+            notif.querySelector('.notification-icon').textContent = icons[type];
+            notif.querySelector('.notification-text').textContent = message;
+            notif.classList.add('show');
+            
+            setTimeout(() => notif.classList.remove('show'), 4000);
+        }
+        
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        function init() {
+            renderSchedule();
+            updateDeletedCounter();
+            
+            // Проверяем просроченные даты при загрузке
+            removeExpiredDates();
+            
+            // Проверяем каждую минуту
+            setInterval(removeExpiredDates, 60000);
+            
+            // Проверяем в полночь
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 5, 0); // 00:00:05
+            const msUntilMidnight = tomorrow - now;
+            
+            setTimeout(() => {
+                removeExpiredDates();
+                setInterval(removeExpiredDates, 24 * 60 * 60 * 1000); // каждые 24 часа
+            }, msUntilMidnight);
+        }
+        
+        // Запуск
+        init();
+        
+        // Клавиша Escape для закрытия модалки
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
